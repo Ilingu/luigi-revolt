@@ -8,7 +8,7 @@
     "email": "ilingu@protonmail.com",
     "url": "https://github.com/Ilingu"
   },
-  "repository": "",
+  "repository": "https://github.com/Ilingu/luigi-revolt",
   "license": "MIT",
   "packageManager": "pnpm@7.5.0",
   "keywords": [
