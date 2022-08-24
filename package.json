@@ -43,7 +43,10 @@
     "typescript": "^4.6.3"
   },
   "dependencies": {
+    "@nhost/core": "0.7.6",
+    "@nhost/nhost-js": "^1.4.8",
     "dotenv": "^16.0.1",
+    "graphql": "^16.6.0",
     "revolt.js": "^6.0.13"
   }
 }

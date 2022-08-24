@@ -38,11 +38,15 @@ client.on("message", async (message) => {
         });
 
         const { success } = await EnableChannelCmd(ChannelID);
-        if (success && m) m.delete();
-
-        message.reply({
-          content: "This Channel is Enabled ✅",
-        });
+        m && m.delete();
+        if (success)
+          message.reply({
+            content: "This Channel is Enabled ✅",
+          });
+        else
+          message.reply({
+            content: "Failed to Enable this Channel ❌",
+          });
 
         return;
       }
@@ -50,11 +54,16 @@ client.on("message", async (message) => {
         const m = await message.reply({ content: "Disabling this Channel ⏳" });
 
         const { success } = await DisableChannelCmd(ChannelID);
-        if (success && m) m.delete();
+        m && m.delete();
 
-        message.reply({
-          content: "This Channel is Disabled ✅",
-        });
+        if (success)
+          message.reply({
+            content: "This Channel is Disabled ✅",
+          });
+        else
+          message.reply({
+            content: "Failed to Disable this Channel ❌",
+          });
 
         return;
       }
