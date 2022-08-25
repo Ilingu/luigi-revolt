@@ -1,4 +1,4 @@
-import { ExecGraphQL } from "../../lib/db";
+import { ExecGraphQL } from "../../lib/nhost";
 import { ConsoleLog } from "../../lib/types/enums";
 import { FunctionJob } from "../../lib/types/types";
 import { Log } from "../../lib/utils";

@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Client } from "revolt.js";
 import { ConsoleLog } from "../../lib/types/enums";
-import { IsEmptyString, Log } from "../../lib/utils";
-import { ExtractCmd, isValidCmd, ReplyTimeout } from "../utils";
+import { Log } from "../../lib/utils";
+import { ParseMsgCmd, Reply } from "../utils";
 
 const ac = new Client();
 const PREFIX = "ac!";
@@ -14,7 +15,7 @@ ac.on("ready", async () => {
   // })
 });
 ac.on("channel/delete", () => {
-  // deletes channal in DB
+  // deletes channel in DB
 });
 
 ac.on("message", async (message) => {
@@ -22,31 +23,22 @@ ac.on("message", async (message) => {
   const ChannelID = message.channel_id;
 
   if (message.attachments && message.attachments.length > 0) {
-    // Db lib
+    // DB
   }
 
-  const includeCmd =
-    !IsEmptyString(message?.content) && message.content?.startsWith(PREFIX);
-  if (includeCmd) {
-    if (!isValidCmd(message.content as string))
-      return ReplyTimeout(message, "❌ Invalid Command");
+  const {
+    success: isCmd,
+    data: cmd,
+    error,
+  } = ParseMsgCmd(message.content!, PREFIX);
 
-    const cmd = ExtractCmd(message.content as string);
-    if (!cmd) return ReplyTimeout(message, "❌ Command Not Found");
-
+  if (isCmd && cmd) {
     const [instruction] = cmd;
-    try {
-      if (instruction === "time") {
-        return;
-      }
-      ReplyTimeout(message, "❌ Invalid Command instruction");
-    } catch (err) {
-      return ReplyTimeout(
-        message,
-        "❌ Fatal Error When Executing this Command"
-      );
+    if (instruction === "time") {
+      // db
     }
   }
+  error && Reply(message, error);
 });
 
 const StartACBot = () => {
