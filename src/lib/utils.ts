@@ -1,10 +1,9 @@
-import type { Nullable } from "revolt.js";
 import { ConsoleLog } from "./types/enums";
 
 export const Log = (message: string, color = ConsoleLog.FgBlue) =>
   console.log(color, message);
 
-export const IsEmptyString = (str: Nullable<string> | string) =>
+export const IsEmptyString = (str: unknown) =>
   typeof str !== "string" || str.trim().length <= 0;
 
 export const Sleep = (

@@ -2,33 +2,26 @@ import { Client } from "revolt.js";
 import { ConsoleLog } from "../../lib/types/enums";
 import { IsEmptyString, Log } from "../../lib/utils";
 import { DisableChannelCmd, EnableChannelCmd } from "./cmds";
-import { ExtractCmd, isValidCmd, ReplyError } from "./utils";
+import { ExtractCmd, isValidCmd, ReplyTimeout } from "../utils";
 
-const client = new Client();
+const luigi = new Client();
+const PREFIX = "luigi!";
 
-client.on("ready", async () => {
-  Log(`Logged in as ${client?.user?.username}!`);
+luigi.on("ready", async () => {
+  Log(`Logged in as ${luigi?.user?.username}!`);
 });
 
-client.on("message", async (message) => {
-  const MessageID = message._id;
+luigi.on("message", async (message) => {
   const ChannelID = message.channel_id;
 
-  console.log(MessageID, ChannelID, message?.content);
-
-  if (message.attachments && message.attachments.length > 0) {
-    // Db lib
-  }
-
   const includeCmd =
-    !IsEmptyString(message?.content) && message.content?.startsWith("luigi!");
+    !IsEmptyString(message?.content) && message.content?.startsWith(PREFIX);
   if (includeCmd) {
     if (!isValidCmd(message.content as string))
-      return ReplyError(message, "❌ Invalid Command");
+      return ReplyTimeout(message, "❌ Invalid Command");
 
-    // type NoExtractError = Exclude<ReturnType<typeof ExtractCmd>, null>;
     const cmd = ExtractCmd(message.content as string);
-    if (!cmd) return ReplyError(message, "❌ Command Not Found");
+    if (!cmd) return ReplyTimeout(message, "❌ Command Not Found");
 
     const [instruction] = cmd;
     try {
@@ -47,10 +40,7 @@ client.on("message", async (message) => {
           message.reply({
             content: "Failed to Enable this Channel ❌",
           });
-
-        return;
-      }
-      if (instruction === "disable") {
+      } else if (instruction === "disable") {
         const m = await message.reply({ content: "Disabling this Channel ⏳" });
 
         const { success } = await DisableChannelCmd(ChannelID);
@@ -64,24 +54,24 @@ client.on("message", async (message) => {
           message.reply({
             content: "Failed to Disable this Channel ❌",
           });
-
-        return;
-      }
-      return ReplyError(message, "❌ Invalid Command instruction");
+      } else ReplyTimeout(message, "❌ Invalid Command instruction");
     } catch (err) {
-      return ReplyError(message, "❌ Fatal Error When Executing this Command");
+      return ReplyTimeout(
+        message,
+        "❌ Fatal Error When Executing this Command"
+      );
     }
   }
 });
-client.on("channel/delete", () => {
-  // Delete all
+luigi.on("channel/delete", async (channel_id) => {
+  await DisableChannelCmd(channel_id); // disabling channel
 });
 
-const StartBotProcess = () => {
-  if (process.env.BOT_TOKEN)
-    client
-      .loginBot(process.env.BOT_TOKEN)
-      .then(() => Log("🔒 Crediential OK", ConsoleLog.FgGreen));
-  else Log("Cannot Login Into Bot", ConsoleLog.FgRed);
+const StartLuigiBot = () => {
+  if (process.env.LUIGI_BOT_TOKEN)
+    luigi
+      .loginBot(process.env.LUIGI_BOT_TOKEN)
+      .then(() => Log("🔒 Luigi Crediential OK", ConsoleLog.FgGreen));
+  else Log("Cannot Login Into Luigi Bot", ConsoleLog.FgRed);
 };
-export default StartBotProcess;
+export default StartLuigiBot;

@@ -1,4 +1,6 @@
 import "dotenv/config";
-import StartBotProcess from "./Services/Bot/bot";
+import StartACBot from "./Services/AutoCleaner/bot";
+import StartLuigiBot from "./Services/Luigi/bot";
 
-StartBotProcess();
+StartLuigiBot();
+StartACBot();
