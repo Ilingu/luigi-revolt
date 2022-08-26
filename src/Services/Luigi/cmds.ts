@@ -1,20 +1,31 @@
-import { ExecGraphQL } from "../../lib/nhost";
+import {
+  GQL_DELETE_LUIGI_CHANNEL,
+  GQL_INSERT_LUIGI_CHANNEL,
+} from "../../lib/db/graphql";
+import { ExecGraphQL } from "../../lib/db/nhost";
+import { CreateChannel, IsChannelExist } from "../../lib/db/ServerGql";
 import { ConsoleLog } from "../../lib/types/enums";
-import { FunctionJob } from "../../lib/types/types";
-import { Log } from "../../lib/utils";
+import { FunctionJob, LuigiChannelShape } from "../../lib/types/types";
+import { Log } from "../../lib/globalUtils";
+import { IsGqlReqSucceed } from "../../lib/db/utils";
 
 export const EnableChannelCmd = async (
   channelId: string
-): Promise<FunctionJob> => {
+): Promise<FunctionJob<LuigiChannelShape>> => {
   Log(`Enabling Channel #${channelId}`, ConsoleLog.FgBlue);
-  // DB
-  const INSERT_CHANNEL = `mutation {
-  insert_channels_one(object: {channel_id: "${channelId}", subscibed: true}) {
-    channel_id
-  }
-}`;
   try {
-    return await ExecGraphQL(INSERT_CHANNEL);
+    if (!(await IsChannelExist(channelId))) {
+      const { success } = await CreateChannel(channelId);
+      if (!success)
+        return { success: false, error: "cannot create root channel" };
+    }
+
+    const [INSERT_LUIGI_CHANNEL, GqlFunc] = GQL_INSERT_LUIGI_CHANNEL(channelId);
+
+    const resp = await ExecGraphQL<LuigiChannelShape>(INSERT_LUIGI_CHANNEL);
+    const success = IsGqlReqSucceed(resp, GqlFunc);
+
+    return { success, data: resp?.data && resp.data[GqlFunc] };
   } catch (err) {
     console.error(err);
     return { success: false };
@@ -23,18 +34,16 @@ export const EnableChannelCmd = async (
 
 export const DisableChannelCmd = async (
   channelId: string
-): Promise<FunctionJob> => {
+): Promise<FunctionJob<LuigiChannelShape>> => {
   Log(`Disabling Channel #${channelId}`, ConsoleLog.FgBlue);
-  // DB
-  const DELETE_CHANNEL = `mutation {
-  delete_channels_by_pk(channel_id: "${channelId}") {
-    ImgToDeletes {
-      message_id
-    }
-  }
-}`;
+
   try {
-    return await ExecGraphQL(DELETE_CHANNEL);
+    const [DELETE_LUIGI_CHANNEL, GqlFunc] = GQL_DELETE_LUIGI_CHANNEL(channelId);
+
+    const resp = await ExecGraphQL<LuigiChannelShape>(DELETE_LUIGI_CHANNEL);
+    const success = IsGqlReqSucceed(resp, GqlFunc);
+
+    return { success, data: resp?.data && resp.data[GqlFunc] };
   } catch (err) {
     console.error(err);
     return { success: false };

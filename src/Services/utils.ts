@@ -9,7 +9,7 @@ import type {
   FunctionJob,
   ParsedCmdShape,
 } from "../lib/types/types";
-import { IsEmptyString, Log, Sleep } from "../lib/utils";
+import { IsEmptyString, Log, Sleep } from "../lib/globalUtils";
 
 /* Bots Utils */
 

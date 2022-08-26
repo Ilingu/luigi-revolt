@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Client } from "revolt.js";
 import { ConsoleLog } from "../../lib/types/enums";
-import { Log } from "../../lib/utils";
+import { Log } from "../../lib/globalUtils";
 import { ParseMsgCmd, Reply } from "../utils";
 
 const ac = new Client();

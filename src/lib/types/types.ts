@@ -18,3 +18,16 @@ export interface CmdsExecArgsShape<T = never> {
   successMsg?: string;
   errorMsg?: string;
 }
+
+export type nHostResp<T = nHostRespType> = {
+  [K: string]: T;
+};
+export type nHostRespType = ChannelShape | LuigiChannelShape;
+
+export interface ChannelShape {
+  channel_id: string;
+}
+export interface LuigiChannelShape {
+  channel: string;
+  subscribed?: boolean;
+}

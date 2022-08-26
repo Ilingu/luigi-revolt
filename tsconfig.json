@@ -20,7 +20,8 @@
     "sourceMap": true,
     "outDir": "./dist/tsc/",
     "types": ["node", "jest"],
-    "lib": ["ES6", "DOM"]
+    "lib": ["ES6", "DOM"],
+    "suppressImplicitAnyIndexErrors": true
   },
   "include": ["src/**/*.ts"],
   "exclude": ["node_modules", "**/*.test.ts"]
