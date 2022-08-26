@@ -26,6 +26,6 @@ jobs:
 
       - run: pnpm install
       - run: pnpm add -D esbuild
-      - run: pnpm test
+      # - run: pnpm test
       - run: pnpm lint
       - run: pnpm build-all
