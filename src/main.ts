@@ -1,11 +1,14 @@
 import "dotenv/config";
 import StartACBot from "./Services/AutoCleaner/bot";
-import StartCronReceiverServer from "./Services/CronReceiver/server";
+import StartCronReceiverServer from "./Services/Cron/receiver";
 import StartLuigiBot from "./Services/Luigi/bot";
 
-// Server
-StartCronReceiverServer();
+const mainProcess = async () => {
+  // Server
+  StartCronReceiverServer();
 
-// Bots
-StartLuigiBot();
-StartACBot();
+  // Bots
+  StartLuigiBot();
+  StartACBot();
+};
+mainProcess();

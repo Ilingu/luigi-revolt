@@ -58,7 +58,7 @@ export const SendLuigiMsg = async (
   if (!subscribed) return;
 
   const ch = await luigi.channels.fetch(channel);
-  ch.sendMessage({ content: `${luigirEmojiId} Luigi **${LuigiOfDay}** !` });
+  ch.sendMessage({ content: `# ${luigirEmojiId} Luigi $${LuigiOfDay}$ !` });
 };
 
 const StartLuigiBot = () => {

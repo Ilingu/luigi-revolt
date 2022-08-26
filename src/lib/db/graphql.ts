@@ -16,7 +16,7 @@ export const GQL_DELETE_CHANNEL = (id: string): GqlQuery => [
 ];
 
 export const GQL_INSERT_LUIGI_CHANNEL = (id: string): GqlQuery => [
-  `mutation {insert_luigi_subscribed_chans_one(object: {channel: "${id}", subscribed: true})}`,
+  `mutation { insert_luigi_subscribed_chans_one(object: {channel: "${id}", subscribed: true}) { channel } }`,
   "insert_luigi_subscribed_chans_one",
 ];
 
