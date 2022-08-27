@@ -19,8 +19,8 @@ ac.on("channel/delete", () => {
 });
 
 ac.on("message", async (message) => {
-  const MessageID = message._id;
-  const ChannelID = message.channel_id;
+  // const MessageID = message._id;
+  // const ChannelID = message.channel_id;
 
   if (message.attachments && message.attachments.length > 0) {
     // DB
