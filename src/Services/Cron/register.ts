@@ -23,17 +23,21 @@ export const RegisterAllService = async () => {
       DEVMode ? "http://localhost:3001" : "https://cronapi.up.railway.app"
     }/addJob`;
 
-    const res = await fetch(URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: process.env.CRON_API_KEY || "",
-      },
-      body: JSON.stringify(cronToRegister),
-    });
-    Log(
-      `${cronToRegister.CallbackUrl}: ${res.ok ? "OK ✅" : "ERROR ❌"} `,
-      res.ok ? ColorLog.FgGreen : ColorLog.FgRed
-    );
+    try {
+      const res = await fetch(URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: process.env.CRON_API_KEY || "",
+        },
+        body: JSON.stringify(cronToRegister),
+      });
+      Log(
+        `${cronToRegister.CallbackUrl}: ${res.ok ? "OK ✅" : "ERROR ❌"} `,
+        res.ok ? ColorLog.FgGreen : ColorLog.FgRed
+      );
+    } catch (err) {
+      Log(`${cronToRegister.CallbackUrl}: "ERROR ❌`, ColorLog.FgRed);
+    }
   }
 };
