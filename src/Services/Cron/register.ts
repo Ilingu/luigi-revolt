@@ -7,16 +7,20 @@ interface CronAPIBody {
   CallbackUrl: string;
 }
 
+const DEVMode = process.env.APP_MODE === "dev";
 const ServiceCron: CronAPIBody[] = [
-  { Frequency: "@daily", CallbackUrl: "http://localhost:3000/luigi" },
+  {
+    Frequency: "@daily",
+    CallbackUrl: `${
+      DEVMode ? "http://localhost:3000" : "https://revolt-bots.up.railway.app"
+    }/luigi`,
+  },
 ];
 
 export const RegisterAllService = async () => {
   for (const cronToRegister of ServiceCron) {
     const URL = `${
-      process.env.APP_MODE === "dev"
-        ? "http://localhost:3001"
-        : "https://cronapi.up.railway.app"
+      DEVMode ? "http://localhost:3001" : "https://cronapi.up.railway.app"
     }/addJob`;
 
     const res = await fetch(URL, {
