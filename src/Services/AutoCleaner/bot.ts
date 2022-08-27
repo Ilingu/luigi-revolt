@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Client } from "revolt.js";
-import { ConsoleLog } from "../../lib/types/enums";
+import { ColorLog } from "../../lib/types/enums";
 import { Log } from "../../lib/globalUtils";
 import { ParseMsgCmd, Reply } from "../utils";
 
@@ -44,8 +44,8 @@ ac.on("message", async (message) => {
 const StartACBot = () => {
   if (process.env.AUTOCLEANER_BOT_TOKEN)
     ac.loginBot(process.env.AUTOCLEANER_BOT_TOKEN).then(() =>
-      Log("🔒 AC Crediential OK", ConsoleLog.FgGreen)
+      Log("🔒 AC Crediential OK", ColorLog.FgGreen)
     );
-  else Log("Cannot Login Into AC Bot", ConsoleLog.FgRed);
+  else Log("Cannot Login Into AC Bot", ColorLog.FgRed);
 };
 export default StartACBot;

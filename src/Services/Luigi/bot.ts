@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Client } from "revolt.js";
-import { ConsoleLog } from "../../lib/types/enums";
+import { ColorLog } from "../../lib/types/enums";
 import { Log } from "../../lib/globalUtils";
 import { DisableChannelCmd, EnableChannelCmd } from "./cmds";
 import { HandleCmdsExec, ParseMsgCmd, Reply, ReplyTimeout } from "../utils";
@@ -65,7 +65,7 @@ const StartLuigiBot = () => {
   if (process.env.LUIGI_BOT_TOKEN)
     luigi
       .loginBot(process.env.LUIGI_BOT_TOKEN)
-      .then(() => Log("🔒 Luigi Crediential OK", ConsoleLog.FgGreen));
-  else Log("Cannot Login Into Luigi Bot", ConsoleLog.FgRed);
+      .then(() => Log("🔒 Luigi Crediential OK", ColorLog.FgGreen));
+  else Log("Cannot Login Into Luigi Bot", ColorLog.FgRed);
 };
 export default StartLuigiBot;

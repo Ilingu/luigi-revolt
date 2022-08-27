@@ -4,7 +4,7 @@ import {
 } from "../../lib/db/graphql";
 import { ExecGraphQL } from "../../lib/db/nhost";
 import { CreateChannel, IsChannelExist } from "../../lib/db/ServerGql";
-import { ConsoleLog } from "../../lib/types/enums";
+import { ColorLog } from "../../lib/types/enums";
 import { FunctionJob, LuigiChannelShape } from "../../lib/types/types";
 import { Log } from "../../lib/globalUtils";
 import { IsGqlReqSucceed } from "../../lib/db/utils";
@@ -12,7 +12,7 @@ import { IsGqlReqSucceed } from "../../lib/db/utils";
 export const EnableChannelCmd = async (
   channelId: string
 ): Promise<FunctionJob<LuigiChannelShape>> => {
-  Log(`Enabling Channel #${channelId}`, ConsoleLog.FgBlue);
+  Log(`Enabling Channel #${channelId}`, ColorLog.FgBlue);
   try {
     if (!(await IsChannelExist(channelId))) {
       const { success } = await CreateChannel(channelId);
@@ -35,7 +35,7 @@ export const EnableChannelCmd = async (
 export const DisableChannelCmd = async (
   channelId: string
 ): Promise<FunctionJob<LuigiChannelShape>> => {
-  Log(`Disabling Channel #${channelId}`, ConsoleLog.FgBlue);
+  Log(`Disabling Channel #${channelId}`, ColorLog.FgBlue);
 
   try {
     const [DELETE_LUIGI_CHANNEL, GqlFunc] = GQL_DELETE_LUIGI_CHANNEL(channelId);

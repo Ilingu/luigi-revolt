@@ -1,6 +1,6 @@
-import { ConsoleLog } from "./types/enums";
+import { ColorLog } from "./types/enums";
 
-export const Log = (message: string, color = ConsoleLog.FgBlue) =>
+export const Log = (message: string, color = ColorLog.FgBlue) =>
   console.log(color, message);
 
 export const IsEmptyString = (str: unknown) =>

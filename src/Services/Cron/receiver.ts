@@ -1,9 +1,19 @@
 import Fastify from "fastify";
+import cors from "@fastify/cors";
 import { Log } from "../../lib/globalUtils";
-import { ConsoleLog } from "../../lib/types/enums";
+import { ColorLog } from "../../lib/types/enums";
 import { DailyLuigi } from "../Luigi/luigi";
-const fastify = Fastify({
-  logger: true,
+const fastify = Fastify();
+
+const URlWhitlist =
+  process.env.APP_MODE === "dev"
+    ? "http://localhost:3001"
+    : "https://cronapi.up.railway.app";
+
+fastify.register(cors, {
+  origin: URlWhitlist,
+  methods: ["POST"],
+  exposedHeaders: ["Continue"],
 });
 
 interface RouteWebhook {
@@ -15,16 +25,16 @@ interface RouteWebhook {
 const ServicesWebhooks: RouteWebhook[] = [
   { routePath: "/luigi", callbackFn: DailyLuigi },
   { routePath: "/anime-update", callbackFn: () => null },
+  { routePath: "/autoclean", callbackFn: () => null },
 ];
 
 // Register All Routes
 for (const { routePath, callbackFn } of ServicesWebhooks) {
-  Log(`Turning On ${routePath}`, ConsoleLog.FgCyan);
-  fastify.post(routePath, async (req, rep) => {
+  Log(`Turning On ${routePath}`, ColorLog.FgCyan);
+  fastify.post(routePath, async (_, rep) => {
     callbackFn();
 
-    if (req.hostname !== "cronapi.up.railway.app")
-      return rep.status(401).send(); // ❌
+    Log(`${routePath} Hit! 🎯`, ColorLog.FgMagenta);
     return rep.status(200).header("Continue", "true").send();
   });
 }

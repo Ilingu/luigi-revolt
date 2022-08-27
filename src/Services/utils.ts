@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import type { Message } from "revolt.js";
-import { ConsoleLog } from "../lib/types/enums";
+import { ColorLog } from "../lib/types/enums";
 import type {
   AvailableBots,
   AvailableCmds,
@@ -19,7 +19,7 @@ export const ReplyTimeout = async (message: Message, err: string) => {
     if (!m) return;
     await Sleep(5000, async () => await m.delete());
   } catch (err) {
-    Log(err as string, ConsoleLog.FgRed);
+    Log(err as string, ColorLog.FgRed);
   }
 };
 
@@ -27,7 +27,7 @@ export const Reply = async (message: Message, msg: string) => {
   try {
     return await message.reply({ content: msg });
   } catch (err) {
-    Log(err as string, ConsoleLog.FgRed);
+    Log(err as string, ColorLog.FgRed);
     return null;
   }
 };
