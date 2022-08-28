@@ -20,9 +20,10 @@ export const IsChannelExist = async (channelId: string): Promise<boolean> => {
 };
 
 export const CreateChannel = async (
-  channelId: string
+  channelId: string,
+  sub = false
 ): Promise<FunctionJob<ChannelShape>> => {
-  const [INSERT_CHANNEL, GqlFunc] = GQL_INSERT_CHANNEL(channelId);
+  const [INSERT_CHANNEL, GqlFunc] = GQL_INSERT_CHANNEL(channelId, sub);
   try {
     const resp = await ExecGraphQL<ChannelShape>(INSERT_CHANNEL);
     const success = IsGqlReqSucceed(resp, GqlFunc);

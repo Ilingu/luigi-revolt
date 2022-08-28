@@ -1,7 +1,7 @@
 import { GQL_QUERY_ALL_LUIGI_CHANNELS } from "../../lib/db/graphql";
 import { ExecGraphQL } from "../../lib/db/nhost";
 import { IsGqlReqSucceed } from "../../lib/db/utils";
-import { FunctionJob, LuigiChannelShape } from "../../lib/types/types";
+import { ChannelShape, FunctionJob } from "../../lib/types/types";
 import { SendLuigiMsg } from "./bot";
 
 export const DailyLuigi = async () => {
@@ -13,14 +13,10 @@ export const DailyLuigi = async () => {
   subsChannels.forEach((ch) => SendLuigiMsg(ch, LuigiOfTheDay));
 };
 
-const queryAllSubsChannels = async (): Promise<
-  FunctionJob<LuigiChannelShape[]>
-> => {
+const queryAllSubsChannels = async (): Promise<FunctionJob<ChannelShape[]>> => {
   const [QUERY_ALL_LUIGI_CHANNELS, GqlFunc] = GQL_QUERY_ALL_LUIGI_CHANNELS;
   try {
-    const resp = await ExecGraphQL<LuigiChannelShape[]>(
-      QUERY_ALL_LUIGI_CHANNELS
-    );
+    const resp = await ExecGraphQL<ChannelShape[]>(QUERY_ALL_LUIGI_CHANNELS);
     const success = IsGqlReqSucceed(resp, GqlFunc);
 
     return { success, data: resp?.data && resp.data[GqlFunc] };

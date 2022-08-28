@@ -4,7 +4,7 @@ import { ColorLog } from "../../lib/types/enums";
 import { Log } from "../../lib/globalUtils";
 import { DisableChannelCmd, EnableChannelCmd } from "./cmds";
 import { HandleCmdsExec, ParseMsgCmd, Reply, ReplyTimeout } from "../utils";
-import { LuigiChannelShape } from "../../lib/types/types";
+import { ChannelShape } from "../../lib/types/types";
 
 const luigi = new Client();
 const PREFIX = "luigi!";
@@ -26,7 +26,7 @@ luigi.on("message", async (message) => {
     const [instruction] = cmd;
     if (instruction === "enable") {
       const EnablePromise = EnableChannelCmd(ChannelID);
-      HandleCmdsExec<LuigiChannelShape>({
+      HandleCmdsExec<ChannelShape>({
         CmdToExec: EnablePromise,
         replyPipe: message,
         loadingMsg: "Enabling this Channel ⏳",
@@ -35,7 +35,7 @@ luigi.on("message", async (message) => {
       });
     } else if (instruction === "disable") {
       const DisablePromise = DisableChannelCmd(ChannelID);
-      HandleCmdsExec<LuigiChannelShape>({
+      HandleCmdsExec<ChannelShape>({
         CmdToExec: DisablePromise,
         replyPipe: message,
         loadingMsg: "Disabling this Channel ⏳",
@@ -52,12 +52,12 @@ luigi.on("channel/delete", async (channel_id) => {
 
 const luigirEmojiId = ":01GBDS81FEJ7XKFXZNFDY0FJ2C:";
 export const SendLuigiMsg = async (
-  { channel, subscribed }: LuigiChannelShape,
+  { channel_id, daily_luigi }: ChannelShape,
   LuigiOfDay: number
 ) => {
-  if (!subscribed) return;
+  if (!daily_luigi) return;
 
-  const ch = await luigi.channels.fetch(channel);
+  const ch = await luigi.channels.fetch(channel_id);
   ch.sendMessage({ content: `# ${luigirEmojiId} Luigi $${LuigiOfDay}$ !` });
 };
 

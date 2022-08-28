@@ -25,11 +25,10 @@ const ServicesWebhooks: RouteWebhook[] = [
 // Register All Routes
 for (const { routePath, callbackFn } of ServicesWebhooks) {
   Log(`Turning On ${routePath}`, ColorLog.FgCyan);
-  fastify.post(routePath, async (req, rep) => {
+  fastify.post(routePath, async (_, rep) => {
     callbackFn();
 
-    console.log(req.headers.origin);
-    Log(`${routePath} Hit! 🎯`, ColorLog.FgMagenta);
+    Log(`${routePath} Hit! 🎯`, ColorLog.FgMagenta, true);
     return rep.status(200).header("Continue", "true").send();
   });
 }

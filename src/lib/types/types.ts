@@ -22,12 +22,10 @@ export interface CmdsExecArgsShape<T = never> {
 export type nHostResp<T = nHostRespType> = {
   [K: string]: T;
 };
-export type nHostRespType = ChannelShape | LuigiChannelShape;
+export type nHostRespType = ChannelShape;
 
 export interface ChannelShape {
   channel_id: string;
-}
-export interface LuigiChannelShape {
-  channel: string;
-  subscribed?: boolean;
+  daily_luigi: boolean;
+  created_at: Date;
 }
