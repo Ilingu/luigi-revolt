@@ -15,6 +15,12 @@ const ServiceCron: CronAPIBody[] = [
       DEVMode ? "http://localhost:3000" : "https://revolt-bots.up.railway.app"
     }/luigi`,
   },
+  {
+    Frequency: "@daily",
+    CallbackUrl: `${
+      DEVMode ? "http://localhost:3000" : "https://revolt-bots.up.railway.app"
+    }/clean`,
+  },
 ];
 
 export const RegisterAllService = async () => {

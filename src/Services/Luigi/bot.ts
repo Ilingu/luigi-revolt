@@ -4,7 +4,7 @@ import { ColorLog } from "../../lib/types/enums";
 import { Log } from "../../lib/globalUtils";
 import { DisableChannelCmd, EnableChannelCmd } from "./cmds";
 import { HandleCmdsExec, ParseMsgCmd, Reply, ReplyTimeout } from "../utils";
-import { ChannelShape } from "../../lib/types/types";
+import type { ChannelShape } from "../../lib/types/types";
 
 const luigi = new Client();
 const PREFIX = "luigi!";
@@ -46,19 +46,33 @@ luigi.on("message", async (message) => {
   }
   error && Reply(message, error);
 });
-luigi.on("channel/delete", async (channel_id) => {
-  await DisableChannelCmd(channel_id); // disabling channel
-});
 
 const luigirEmojiId = ":01GBDS81FEJ7XKFXZNFDY0FJ2C:";
-export const SendLuigiMsg = async (
+export const SendLuigiDailyMsg = async (
   { channel_id, daily_luigi }: ChannelShape,
   LuigiOfDay: number
 ) => {
   if (!daily_luigi) return;
 
-  const ch = await luigi.channels.fetch(channel_id);
-  ch.sendMessage({ content: `# ${luigirEmojiId} Luigi $${LuigiOfDay}$ !` });
+  try {
+    const ch = await luigi.channels.fetch(channel_id);
+    ch.sendMessage({
+      embeds: [
+        {
+          icon_url:
+            "https://autumn.revolt.chat/avatars/TREZKXil5xWmZ0XI3XwFg7dTqXObYFODOZOY00-gZ2?max_side=16",
+          title: "💚 Luigi of the Day!",
+          description: `## ${luigirEmojiId} Luigi #$${LuigiOfDay}$`,
+          colour: "#f1c40f",
+        },
+      ],
+    });
+  } catch (err) {
+    Log(
+      `Failed to send DailyLuigi on Channel ${channel_id} ❌`,
+      ColorLog.FgRed
+    );
+  }
 };
 
 const StartLuigiBot = () => {

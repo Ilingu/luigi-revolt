@@ -1,10 +1,13 @@
-import { GQL_SUBS_LUIGI_HANDLER } from "../../lib/db/graphql";
 import { ExecGraphQL } from "../../lib/db/nhost";
-import { CreateChannel, IsChannelExist } from "../../lib/db/ServerGql";
+import {
+  CreateChannel,
+  IsChannelExist,
+} from "../../lib/db/graphql/globalFuncs";
 import { ColorLog } from "../../lib/types/enums";
-import { ChannelShape, FunctionJob } from "../../lib/types/types";
 import { Log } from "../../lib/globalUtils";
 import { IsGqlReqSucceed } from "../../lib/db/utils";
+import type { ChannelShape, FunctionJob } from "../../lib/types/types";
+import { GQL_SUBS_LUIGI_HANDLER } from "./graphql/schema";
 
 export const EnableChannelCmd = async (
   channelId: string
@@ -12,7 +15,7 @@ export const EnableChannelCmd = async (
   Log(`Enabling Channel #${channelId}`, ColorLog.FgBlue);
   try {
     if (!(await IsChannelExist(channelId))) {
-      const { success } = await CreateChannel(channelId, true); // create
+      const { success } = await CreateChannel(channelId, { isSub: true }); // create
       return {
         success,
         error: !success ? "cannot create root channel" : undefined,

@@ -1,5 +1,5 @@
 import { NhostClient } from "@nhost/nhost-js";
-import { FunctionJob, nHostResp, nHostRespType } from "../types/types";
+import type { FunctionJob, nHostResp, nHostRespType } from "../types/types";
 
 const nhost = new NhostClient({
   // backendUrl: `https://${process.env.DB_URL}.nhost.run`,
@@ -13,11 +13,11 @@ export const ExecGraphQL = async <T = nHostRespType>(
 ): Promise<FunctionJob<nHostResp<T>>> => {
   try {
     const { data, error } = await nhost.graphql.request<nHostResp<T>>(gql);
-    if (error || !data) return { success: false };
+    if (error || !data) return { success: false, error: JSON.stringify(error) };
 
     return { success: true, data };
   } catch (err) {
     console.error(err);
-    return { success: false };
+    return { success: false, error: `${err}` };
   }
 };

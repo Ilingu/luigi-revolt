@@ -3,6 +3,7 @@ import cors from "@fastify/cors";
 import { Log } from "../../lib/globalUtils";
 import { ColorLog } from "../../lib/types/enums";
 import { DailyLuigi } from "../Luigi/luigi";
+import { CheckAndDeleteExpiredImage } from "../AutoCleaner/autoCleaner";
 const fastify = Fastify();
 
 const URlWhitlist =
@@ -18,8 +19,8 @@ interface RouteWebhook {
 // Routes
 const ServicesWebhooks: RouteWebhook[] = [
   { routePath: "/luigi", callbackFn: DailyLuigi },
+  { routePath: "/clean", callbackFn: CheckAndDeleteExpiredImage },
   { routePath: "/anime-update", callbackFn: () => null },
-  { routePath: "/autoclean", callbackFn: () => null },
 ];
 
 // Register All Routes

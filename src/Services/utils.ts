@@ -107,6 +107,7 @@ export const IsExistingCmd = (
 
   // AutoCleaner's Cmds
   if (bot === "ac" && cmd === "time") return true;
+  if (bot === "ac" && cmd === "index") return true;
 
   // Anime updates' Cmds
   // none for the moment

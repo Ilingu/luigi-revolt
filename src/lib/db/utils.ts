@@ -1,4 +1,4 @@
-import { FunctionJob } from "../types/types";
+import type { FunctionJob } from "../types/types";
 
 export const IsGqlReqSucceed = <T = never>(
   { success, data }: FunctionJob<T>,

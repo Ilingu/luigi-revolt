@@ -2,28 +2,59 @@
 import { Client } from "revolt.js";
 import { ColorLog } from "../../lib/types/enums";
 import { Log } from "../../lib/globalUtils";
-import { ParseMsgCmd, Reply } from "../utils";
+import { HandleCmdsExec, ParseMsgCmd, Reply, ReplyTimeout } from "../utils";
+import { CreateChannel, DeleteChannel } from "../../lib/db/graphql/globalFuncs";
+import { DeleteAllChannelImages, InsertChannelImg } from "./graphql/funcs";
+import { ChannelShape, FunctionJob } from "../../lib/types/types";
+import { GQL_DELETE_IMAGES_BY_MESSAGES_IDS } from "./graphql/schema";
+import { ExecGraphQL } from "../../lib/db/nhost";
+import { UpdateExpireTime } from "./cmds";
 
 const ac = new Client();
 const PREFIX = "ac!";
 
 ac.on("ready", async () => {
   Log(`Logged in as ${ac?.user?.username}!`);
+
   // Index All Channel In DB
-  // client.channels.forEach(c =>{
-  //   c._id
-  // })
+  ac.channels.forEach(({ _id: chId }) => {
+    CreateChannel(chId); // We create a channel representation in the DB
+  });
 });
-ac.on("channel/delete", () => {
-  // deletes channel in DB
+
+ac.on("channel/create", async (ch) => {
+  const { success } = await CreateChannel(ch._id); // We create a channel representation in the DB
+
+  const m = await ch.sendMessage({
+    content: success
+      ? "Channel Successfully Indexed ✅"
+      : "Couldn't index this channel ❌",
+  });
+  setTimeout(() => m.delete(), 10_000);
+});
+ac.on("channel/delete", async (chId) => {
+  const success = await DeleteAllChannelImages(chId); // First, we delete all the image linked to the channel in the DB
+  success && (await DeleteChannel(chId)); // Second, we delete the channel itself in the DB
 });
 
 ac.on("message", async (message) => {
-  // const MessageID = message._id;
-  // const ChannelID = message.channel_id;
+  const MessageID = message._id;
+  const ChannelID = message.channel_id;
 
   if (message.attachments && message.attachments.length > 0) {
-    // DB
+    const { success } = await InsertChannelImg(
+      ChannelID,
+      MessageID,
+      message?.createdAt || Date.now()
+    ); // Add the image to the deletion queue
+
+    if (!success) {
+      await message.delete(); // if error, delete the image since we don't want the iomage to be never deleted
+      await message.channel?.sendMessage(
+        "### This image was deleted by @AutoCleaner, because I couldn't add it to the deletion queue. Try again."
+      ); // Tell the user that an error occur
+      return;
+    }
   }
 
   const {
@@ -33,13 +64,53 @@ ac.on("message", async (message) => {
   } = ParseMsgCmd(message.content!, PREFIX);
 
   if (isCmd && cmd) {
-    const [instruction] = cmd;
+    const [instruction, args] = cmd;
+    if (args.length !== 1 || isNaN(parseInt(args[1])))
+      return ReplyTimeout(message, "invalid args");
+
     if (instruction === "time") {
-      // db
-    }
+      const UpdateETPromise = UpdateExpireTime(ChannelID, args[1]);
+      HandleCmdsExec<ChannelShape>({
+        CmdToExec: UpdateETPromise,
+        replyPipe: message,
+        loadingMsg: "Updating this channel expire time ⏳",
+        successMsg: "Channel expire time updated Successfully ✅",
+        errorMsg: "Couldn't Update this channel expire time ❌",
+      });
+    } else if (instruction === "index") {
+      const CreateChPromise = CreateChannel(ChannelID);
+      HandleCmdsExec<ChannelShape>({
+        CmdToExec: CreateChPromise,
+        replyPipe: message,
+        loadingMsg: "Indexing this Channel ⏳",
+        successMsg: "Channel Successfully Indexed ✅",
+        errorMsg: "Couldn't index this channel ❌",
+      });
+    } else ReplyTimeout(message, "❌ Invalid Command instruction");
   }
   error && Reply(message, error);
 });
+ac.on("message/delete", async (msgId, msg) => {
+  if (msg && msg.attachments && msg.attachments.length > 0) {
+    const [DELETE_IMAGES] = GQL_DELETE_IMAGES_BY_MESSAGES_IDS([msgId]);
+    await ExecGraphQL(DELETE_IMAGES);
+  }
+});
+
+export const acDeleteImages = async (
+  chId: string,
+  msgIds: string[]
+): Promise<FunctionJob> => {
+  try {
+    const ch = await ac.channels.fetch(chId);
+    await ch.deleteMessages(msgIds);
+    return { success: true };
+  } catch (err) {
+    console.log(err);
+    Log(`Failed to delete messages on Channel ${chId} ❌`, ColorLog.FgRed);
+    return { success: false };
+  }
+};
 
 const StartACBot = () => {
   if (process.env.AUTOCLEANER_BOT_TOKEN)
