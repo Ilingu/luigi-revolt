@@ -62,7 +62,7 @@ export const HandleCmdsExec = async <T = never>({
 
 /* Cmds Utils */
 
-const cmdRegex = /(luigi|ac|anime)!([a-zA-Z]+)(?: ([a-zA-Z ]+))?/im;
+const cmdRegex = /(luigi|ac|anime)!([a-zA-Z]+)(?: ([a-zA-Z0-9 ]+))?/im;
 
 export const ParseMsgCmd = (
   content: string,

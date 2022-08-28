@@ -28,7 +28,10 @@ export const UpdateExpireTime = async (
     const resp = await ExecGraphQL<RespType>(UPDATE_IMG_EXPIRE_TIME);
 
     const success = IsGqlReqSucceed(resp, GqlFunc);
-    if (resp?.data && resp.data[GqlFunc]?.image_expire_time !== newTime)
+    if (
+      resp?.data &&
+      resp.data[GqlFunc]?.image_expire_time !== parseInt(newTime.toString())
+    )
       return { success: false };
 
     return { success };

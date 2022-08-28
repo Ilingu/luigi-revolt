@@ -65,11 +65,15 @@ ac.on("message", async (message) => {
 
   if (isCmd && cmd) {
     const [instruction, args] = cmd;
-    if (args.length !== 1 || isNaN(parseInt(args[1])))
-      return ReplyTimeout(message, "invalid args");
 
     if (instruction === "time") {
-      const UpdateETPromise = UpdateExpireTime(ChannelID, args[1]);
+      if (args.length !== 1 || isNaN(parseInt(args[0])))
+        return ReplyTimeout(
+          message,
+          'Invalid args ❌. E.g: "ac!<command> <arg1> <arg2>"'
+        );
+
+      const UpdateETPromise = UpdateExpireTime(ChannelID, args[0]);
       HandleCmdsExec<ChannelShape>({
         CmdToExec: UpdateETPromise,
         replyPipe: message,
@@ -84,7 +88,8 @@ ac.on("message", async (message) => {
         replyPipe: message,
         loadingMsg: "Indexing this Channel ⏳",
         successMsg: "Channel Successfully Indexed ✅",
-        errorMsg: "Couldn't index this channel ❌",
+        errorMsg:
+          "Couldn't index this channel ❌ (hint: this channel is possibly already indexed in the DB) ",
       });
     } else ReplyTimeout(message, "❌ Invalid Command instruction");
   }
