@@ -12,8 +12,10 @@ import { UpdateExpireTime } from "./cmds";
 
 const ac = new Client();
 const PREFIX = "ac!";
+let isUp = false;
 
 ac.on("ready", async () => {
+  isUp = true;
   Log(`Logged in as ${ac?.user?.username}!`);
 
   // Index All Channel In DB
@@ -124,6 +126,11 @@ const StartACBot = () => {
     );
   else Log("Cannot Login Into AC Bot", ColorLog.FgRed);
 };
-ac.on("dropped", StartACBot);
+ac.on("dropped", () => {
+  isUp = false;
+  setTimeout(() => {
+    if (!isUp) StartACBot();
+  }, 10_000);
+});
 
 export default StartACBot;

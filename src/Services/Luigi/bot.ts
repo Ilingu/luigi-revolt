@@ -8,8 +8,10 @@ import type { ChannelShape } from "../../lib/types/types";
 
 const luigi = new Client();
 const PREFIX = "luigi!";
+let isUp = false;
 
 luigi.on("ready", async () => {
+  isUp = true;
   Log(`Logged in as ${luigi?.user?.username}!`);
 });
 
@@ -82,6 +84,11 @@ const StartLuigiBot = () => {
       .then(() => Log("🔒 Luigi Crediential OK", ColorLog.FgGreen, true));
   else Log("Cannot Login Into Luigi Bot", ColorLog.FgRed);
 };
-luigi.on("dropped", StartLuigiBot);
+luigi.on("dropped", () => {
+  isUp = false;
+  setTimeout(() => {
+    if (!isUp) StartLuigiBot();
+  }, 10_000);
+});
 
 export default StartLuigiBot;
