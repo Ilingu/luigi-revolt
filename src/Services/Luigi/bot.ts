@@ -79,7 +79,9 @@ const StartLuigiBot = () => {
   if (process.env.LUIGI_BOT_TOKEN)
     luigi
       .loginBot(process.env.LUIGI_BOT_TOKEN)
-      .then(() => Log("🔒 Luigi Crediential OK", ColorLog.FgGreen));
+      .then(() => Log("🔒 Luigi Crediential OK", ColorLog.FgGreen, true));
   else Log("Cannot Login Into Luigi Bot", ColorLog.FgRed);
 };
+luigi.on("dropped", StartLuigiBot);
+
 export default StartLuigiBot;

@@ -120,8 +120,10 @@ export const acDeleteImages = async (
 const StartACBot = () => {
   if (process.env.AUTOCLEANER_BOT_TOKEN)
     ac.loginBot(process.env.AUTOCLEANER_BOT_TOKEN).then(() =>
-      Log("🔒 AC Crediential OK", ColorLog.FgGreen)
+      Log("🔒 AC Crediential OK", ColorLog.FgGreen, true)
     );
   else Log("Cannot Login Into AC Bot", ColorLog.FgRed);
 };
+ac.on("dropped", StartACBot);
+
 export default StartACBot;
