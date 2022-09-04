@@ -11,6 +11,6 @@ const mainProcess = async () => {
 
   // Server
   await StartCronReceiverServer();
-  RegisterAllService();
+  process.env.APP_MODE === "prod" && RegisterAllService();
 };
 mainProcess();

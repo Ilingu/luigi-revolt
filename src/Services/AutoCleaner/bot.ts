@@ -16,7 +16,7 @@ let isUp = false;
 
 ac.on("ready", async () => {
   isUp = true;
-  Log(`Logged in as ${ac?.user?.username}!`);
+  Log(`Logged in as ${ac?.user?.username}!`, ColorLog.FgBlue, true);
 
   // Index All Channel In DB
   ac.channels.forEach(({ _id: chId }) => {
@@ -122,7 +122,7 @@ export const acDeleteImages = async (
 const StartACBot = () => {
   if (process.env.AUTOCLEANER_BOT_TOKEN)
     ac.loginBot(process.env.AUTOCLEANER_BOT_TOKEN).then(() =>
-      Log("🔒 AC Crediential OK", ColorLog.FgGreen, true)
+      Log("🔒 AC Crediential OK", ColorLog.FgGreen)
     );
   else Log("Cannot Login Into AC Bot", ColorLog.FgRed);
 };

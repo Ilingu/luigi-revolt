@@ -47,3 +47,11 @@ export interface CreateChannelOption {
   isSub?: boolean;
   expireTime?: number | string;
 }
+
+export interface AnimeEpisodeShape {
+  Title: string;
+  EpisodeId: string;
+  TimeReleased: string;
+  Img: string;
+  Team: string;
+}

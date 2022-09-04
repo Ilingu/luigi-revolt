@@ -12,7 +12,7 @@ let isUp = false;
 
 luigi.on("ready", async () => {
   isUp = true;
-  Log(`Logged in as ${luigi?.user?.username}!`);
+  Log(`Logged in as ${luigi?.user?.username}!`, ColorLog.FgBlue, true);
 });
 
 luigi.on("message", async (message) => {
@@ -81,7 +81,7 @@ const StartLuigiBot = () => {
   if (process.env.LUIGI_BOT_TOKEN)
     luigi
       .loginBot(process.env.LUIGI_BOT_TOKEN)
-      .then(() => Log("🔒 Luigi Crediential OK", ColorLog.FgGreen, true));
+      .then(() => Log("🔒 Luigi Crediential OK", ColorLog.FgGreen));
   else Log("Cannot Login Into Luigi Bot", ColorLog.FgRed);
 };
 luigi.on("dropped", () => {

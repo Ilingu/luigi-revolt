@@ -47,6 +47,7 @@
     "fastify": "^4.5.3",
     "graphql": "^16.6.0",
     "node-fetch": "2",
+    "revolt-api": "0.5.5-3",
     "revolt.js": "^6.0.13"
   }
 }

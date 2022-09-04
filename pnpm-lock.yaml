@@ -14,6 +14,7 @@ specifiers:
   fastify: ^4.5.3
   graphql: ^16.6.0
   node-fetch: '2'
+  revolt-api: 0.5.5-3
   revolt.js: ^6.0.13
   ts-node: ^10.7.0
   tslib: ^2.4.0
@@ -28,6 +29,7 @@ dependencies:
   fastify: 4.5.3
   graphql: 16.6.0
   node-fetch: 2.6.7
+  revolt-api: 0.5.5-3
   revolt.js: 6.0.13
 
 devDependencies:
@@ -139,6 +141,18 @@ packages:
 
   /@insertish/oapi/0.1.16:
     resolution: {integrity: sha512-dxuLdNKBmnbVw8BBRzE1APZ3d7wErhNWQepXdNM3ueeQrheo6Sjg8FGFCQG7zCrEKns08lg5ITmxhqbYXVXZBQ==}
+    hasBin: true
+    dependencies:
+      typescript: 4.7.4
+    optionalDependencies:
+      axios: 0.26.1
+      openapi-typescript: 5.4.1
+    transitivePeerDependencies:
+      - debug
+    dev: false
+
+  /@insertish/oapi/0.1.18:
+    resolution: {integrity: sha512-LZLUk3WmzUjCM0quensexvQx/Kk1MpFBtCLJRnRrPOiaFT37JpOmWUFlrdu0sPS6B9wi2edEBeLcsnIiq85WMA==}
     hasBin: true
     dependencies:
       typescript: 4.7.4
@@ -1648,6 +1662,16 @@ packages:
     resolution: {integrity: sha512-aaXVqvDu6hWjrPoIUDSlMTdHLbWXfx5rlaycQwzevRizdPZRgsncEadvjfA90tB83N3oeVlKJTscLHbyQNO4QQ==}
     dependencies:
       '@insertish/oapi': 0.1.16
+      axios: 0.26.1
+      lodash.defaultsdeep: 4.6.1
+    transitivePeerDependencies:
+      - debug
+    dev: false
+
+  /revolt-api/0.5.5-3:
+    resolution: {integrity: sha512-65BFQFvPULVw0QuzokwYqmWfRijPcDY+JN66hlJrXszl+Efday1DZlTObI7zyt34ZJ4VHC3+yHb+CNhAv7v0dw==}
+    dependencies:
+      '@insertish/oapi': 0.1.18
       axios: 0.26.1
       lodash.defaultsdeep: 4.6.1
     transitivePeerDependencies:
