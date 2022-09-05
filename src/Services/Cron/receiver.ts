@@ -33,10 +33,11 @@ for (const { routePath, callbackFn } of ServicesWebhooks) {
 // Register special routes
 Log(`Turning On /animeUpdates`, ColorLog.FgCyan);
 fastify.post("/animeUpdates", async (req, rep) => {
+  Log(`/animeUpdates Hit! 🎯`, ColorLog.FgMagenta, true);
+  console.log(JSON.stringify(req.body));
   if (typeof req.body === "object")
     TriggerAnimeUpdate(req.body as AnimeEpisodeShape[]);
 
-  Log(`/animeUpdates Hit! 🎯`, ColorLog.FgMagenta, true);
   return rep.status(200).header("Continue", "true").send();
 });
 

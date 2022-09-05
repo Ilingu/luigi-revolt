@@ -1,5 +1,5 @@
 import { API } from "revolt-api";
-import { Sleep } from "../../lib/globalUtils";
+import { Log, Sleep } from "../../lib/globalUtils";
 import type { AnimeEpisodeShape } from "../../lib/types/types";
 
 interface Embed {
@@ -12,6 +12,7 @@ interface Embed {
 }
 
 export const TriggerAnimeUpdate = async (Update: AnimeEpisodeShape[]) => {
+  Log(`New Anime Update of ${Update.length} animes`);
   if (Update.length === 0) return;
 
   const AnimeUpdateBot = NewBotClient();
