@@ -19,3 +19,11 @@ export const Sleep = (
       res();
     }, duration)
   );
+
+export const SafeJSONParse = <T = unknown>(jsonBytes: string): T | null => {
+  try {
+    return JSON.parse(jsonBytes);
+  } catch (err) {
+    return null;
+  }
+};

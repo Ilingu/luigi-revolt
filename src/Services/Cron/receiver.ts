@@ -1,6 +1,6 @@
 import Fastify from "fastify";
 import cors from "@fastify/cors";
-import { Log } from "../../lib/globalUtils";
+import { Log, SafeJSONParse } from "../../lib/globalUtils";
 import { ColorLog } from "../../lib/types/enums";
 import { DailyLuigi } from "../Luigi/luigi";
 import { CheckAndDeleteExpiredImage } from "../AutoCleaner/autoCleaner";
@@ -34,9 +34,10 @@ for (const { routePath, callbackFn } of ServicesWebhooks) {
 Log(`Turning On /animeUpdates`, ColorLog.FgCyan);
 fastify.post("/animeUpdates", async (req, rep) => {
   Log(`/animeUpdates Hit! 🎯`, ColorLog.FgMagenta, true);
-  console.log(JSON.stringify(req.body));
-  if (typeof req.body === "object")
-    TriggerAnimeUpdate(req.body as AnimeEpisodeShape[]);
+  let body = req.body;
+
+  if (typeof body === "string") body = SafeJSONParse(body);
+  if (typeof body === "object") TriggerAnimeUpdate(body as AnimeEpisodeShape[]);
 
   return rep.status(200).header("Continue", "true").send();
 });
