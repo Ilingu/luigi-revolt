@@ -50,6 +50,10 @@ luigi.on("message", async (message) => {
 });
 
 const luigirEmojiId = ":01GBDS81FEJ7XKFXZNFDY0FJ2C:";
+/**
+ * Fetch the channel and send it the luigi via the luigiBot
+ * @param {string} channelId
+ */
 export const SendLuigiDailyMsg = async (
   { channel_id, daily_luigi }: ChannelShape,
   LuigiOfDay: number

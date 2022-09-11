@@ -6,6 +6,11 @@ import type {
 } from "../../types/types";
 import { CreateChannel, DeleteChannel } from "./globalFuncs";
 
+/**
+ * Query a channel by its ID
+ * @param {string} id
+ * @returns {GqlQuery} [GqlCmd, GqlFunc]
+ */
 export const GQL_QUERY_CHANNEL = (id: string): GqlQuery => [
   `query QueryChannel { 
     channels_by_pk(channel_id: "${id}") { 
@@ -15,6 +20,12 @@ export const GQL_QUERY_CHANNEL = (id: string): GqlQuery => [
   "channels_by_pk",
 ];
 
+/**
+ * Insert a new channel in DB
+ * @param {string} id
+ * @param {?CreateChannelOption} options
+ * @returns {GraphQLCommand} GraphQLCommand
+ */
 export const GQL_INSERT_CHANNEL = (
   id: string,
   options?: CreateChannelOption
@@ -32,6 +43,11 @@ export const GQL_INSERT_CHANNEL = (
   ],
 });
 
+/**
+ * DELETE a channel by its ID
+ * @param {string} id
+ * @returns {GraphQLCommand} GraphQLCommand
+ */
 export const GQL_DELETE_CHANNEL = (
   id: string
 ): GraphQLCommand<ChannelShape> => ({

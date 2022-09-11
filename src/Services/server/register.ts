@@ -30,6 +30,9 @@ const CronToRegister: CronAPIBody[] = [
   },
 ];
 
+/**
+ * Add/register CronJob for all bot
+ */
 export const RegisterAllService = async () => {
   for (const { body, CronServiceUrl } of CronToRegister) {
     const RegisterURL =

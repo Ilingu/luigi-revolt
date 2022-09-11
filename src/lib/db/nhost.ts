@@ -8,6 +8,11 @@ const nhost = new NhostClient({
   adminSecret: process.env.DB_ADMIN,
 });
 
+/**
+ * Exec a graphql string via nhost db
+ * @param {string} gql
+ * @return {FunctionJob<nHostResp<T>>} what nhost/hashura return wrapped in a FunctionJob
+ */
 export const ExecGraphQL = async <T = nHostRespType>(
   gql: string
 ): Promise<FunctionJob<nHostResp<T>>> => {

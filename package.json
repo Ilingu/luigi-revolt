@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "revolt-bot",
-  "version": "0.0.1-alpha",
+  "version": "0.0.1-beta",
   "description": "My Revolt Bot",
   "author": {
     "name": "@Ilingu",
@@ -41,6 +41,7 @@
   },
   "dependencies": {
     "@fastify/cors": "^8.1.0",
+    "@fastify/middie": "^8.0.0",
     "@nhost/core": "0.7.6",
     "@nhost/nhost-js": "^1.4.8",
     "dotenv": "^16.0.1",

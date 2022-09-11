@@ -7,6 +7,9 @@ import {
   GQL_QUERY_ALL_IMAGES,
 } from "./graphql/schema";
 
+/**
+ * Entry point -- Check all image in deletion queue and deleted the expired one
+ */
 export const CheckAndDeleteExpiredImage = async (): Promise<void> => {
   try {
     const [QUERY_ALL_IMAGES, GqlFunc] = GQL_QUERY_ALL_IMAGES;

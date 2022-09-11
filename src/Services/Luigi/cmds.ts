@@ -9,6 +9,10 @@ import { IsGqlReqSucceed } from "../../lib/db/utils";
 import type { ChannelShape, FunctionJob } from "../../lib/types/types";
 import { GQL_SUBS_LUIGI_HANDLER } from "./graphql/schema";
 
+/**
+ * Ipml of enabling (subbing) to luigidaily command
+ * @param {string} channelId
+ */
 export const EnableChannelCmd = async (
   channelId: string
 ): Promise<FunctionJob<ChannelShape>> => {
@@ -34,6 +38,10 @@ export const EnableChannelCmd = async (
   }
 };
 
+/**
+ * Ipml of disabling (unsub) to luigidaily command
+ * @param {string} channelId
+ */
 export const DisableChannelCmd = async (
   channelId: string
 ): Promise<FunctionJob<ChannelShape>> => {

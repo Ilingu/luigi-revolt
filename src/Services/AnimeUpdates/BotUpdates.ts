@@ -11,6 +11,10 @@ interface Embed {
   colour?: string | null;
 }
 
+/**
+ * Dispatch the anime update to the revolt channel
+ * @param {AnimeEpisodeShape[]} Update
+ */
 export const TriggerAnimeUpdate = async (Update: AnimeEpisodeShape[]) => {
   Log(`New Anime Update of ${Update.length} animes`);
   if (Update.length === 0) return;

@@ -1,6 +1,9 @@
 import { SendLuigiDailyMsg } from "./bot";
 import { queryAllSubsChannels } from "./graphql/funcs";
 
+/**
+ * Entry point of Luigi --- Query all sub channels, generate the luig of the day and send to all channels the luigi
+ */
 export const DailyLuigi = async () => {
   const LuigiOfTheDay = generateLuigiOfDay();
 

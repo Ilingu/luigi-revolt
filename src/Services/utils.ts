@@ -13,6 +13,11 @@ import { IsEmptyString, Log, Sleep } from "../lib/globalUtils";
 
 /* Bots Utils */
 
+/**
+ * Reply to a message, and delete it after 5s
+ * @param {Message} message
+ * @param {string} err
+ */
 export const ReplyTimeout = async (message: Message, err: string) => {
   try {
     const m = await message.reply({ content: err });
@@ -23,6 +28,10 @@ export const ReplyTimeout = async (message: Message, err: string) => {
   }
 };
 
+/**
+ * Reply to a message
+ * @param {Message} message
+ */
 export const Reply = async (message: Message, msg: string) => {
   try {
     return await message.reply({ content: msg });
@@ -32,6 +41,11 @@ export const Reply = async (message: Message, msg: string) => {
   }
 };
 
+/**
+ * Handle Bot Command Execution
+ * @param {CmdsExecArgsShape} args
+ * @returns {FunctionJob<T>} The Command Response
+ */
 export const HandleCmdsExec = async <T = never>({
   CmdToExec,
   replyPipe,
@@ -64,6 +78,12 @@ export const HandleCmdsExec = async <T = never>({
 
 const cmdRegex = /(luigi|ac|anime)!([a-zA-Z]+)(?: ([a-zA-Z0-9 ]+))?/im;
 
+/**
+ * Parse the message content, into it's command and args
+ * @param {string} content
+ * @param {string} PREFIX
+ * @return {FunctionJob<ParsedCmdShape>} `[Cmd, args]`
+ */
 export const ParseMsgCmd = (
   content: string,
   PREFIX: string
@@ -98,6 +118,12 @@ const extractCmd = (cmd: string): ParsedCmdShape | null => {
   return [instruction, args || []];
 };
 
+/**
+ * Wether The Command is an existing one in the specified bot
+ * @param {AvailableBots} bot
+ * @param {AvailableCmds} cmd
+ * @return {boolean} boolean
+ */
 export const IsExistingCmd = (
   bot: AvailableBots,
   cmd: AvailableCmds
@@ -106,10 +132,8 @@ export const IsExistingCmd = (
   if (bot === "luigi" && (cmd === "enable" || cmd === "disable")) return true;
 
   // AutoCleaner's Cmds
-  if (bot === "ac" && cmd === "time") return true;
-  if (bot === "ac" && cmd === "index") return true;
+  if (bot === "ac" && (cmd === "time" || cmd === "index")) return true;
 
-  // Anime updates' Cmds
-  // none for the moment
+  // Default behavior
   return false;
 };

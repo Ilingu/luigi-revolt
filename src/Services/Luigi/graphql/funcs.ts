@@ -3,6 +3,9 @@ import { IsGqlReqSucceed } from "../../../lib/db/utils";
 import type { ChannelShape, FunctionJob } from "../../../lib/types/types";
 import { GQL_QUERY_ALL_LUIGI_CHANNELS } from "./schema";
 
+/**
+ * Impl of GQL_QUERY_ALL_LUIGI_CHANNELS
+ */
 export const queryAllSubsChannels = async (): Promise<
   FunctionJob<ChannelShape[]>
 > => {

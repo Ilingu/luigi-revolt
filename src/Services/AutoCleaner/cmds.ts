@@ -7,6 +7,12 @@ import { IsGqlReqSucceed } from "../../lib/db/utils";
 import type { FunctionJob } from "../../lib/types/types";
 import { GQL_UPDATE_IMG_EXPIRE_TIME } from "./graphql/schema";
 
+/**
+ * Update the time after what an image is deleted
+ * @param {string} chId
+ * @param {number | string} newTime
+ * @returns {FunctionJob}
+ */
 export const UpdateExpireTime = async (
   chId: string,
   newTime: number | string
