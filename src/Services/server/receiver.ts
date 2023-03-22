@@ -3,7 +3,7 @@ import cors from "@fastify/cors";
 import { Hash, IsEmptyString, Log, SafeJSONParse } from "../../lib/globalUtils";
 import { ColorLog } from "../../lib/types/enums";
 import { DailyLuigi } from "../Luigi/luigi";
-import { CheckAndDeleteExpiredImage } from "../AutoCleaner/autoCleaner";
+// import { CheckAndDeleteExpiredImage } from "../AutoCleaner/autoCleaner";
 import { TriggerAnimeUpdate } from "../AnimeUpdates/BotUpdates";
 import { AnimeEpisodeShape } from "../../lib/types/types";
 import middie from "@fastify/middie";
@@ -16,8 +16,8 @@ interface RouteWebhook {
 
 const CORSConfig = {
   origin: [
-    "https://cronapi.up.railway.app",
-    "https://adkami-scapping-api.up.railway.app",
+    "https://cronapi.onrender.com",
+    // "https://adkami-scapping-api.up.railway.app",
   ],
   methods: ["POST"],
   exposedHeaders: ["Continue"],
@@ -26,7 +26,7 @@ const CORSConfig = {
 // Routes
 const ServicesWebhooks: RouteWebhook[] = [
   { routePath: "/luigi", callbackFn: DailyLuigi },
-  { routePath: "/clean", callbackFn: CheckAndDeleteExpiredImage },
+  // { routePath: "/clean", callbackFn: CheckAndDeleteExpiredImage },
 ];
 
 // Register All Routes to their Cron
