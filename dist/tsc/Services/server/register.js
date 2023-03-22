@@ -9,22 +9,13 @@ const CronToRegister = [
     {
         body: {
             Frequency: "@daily",
-            CallbackUrl: `https://revolt-bots.up.railway.app/luigi`,
+            CallbackUrl: `https://luigi-revolt.onrender.com/luigi`,
         },
-    },
-    {
-        body: {
-            Frequency: "@daily",
-            CallbackUrl: `https://revolt-bots.up.railway.app/clean`,
-        },
-    },
-    {
-        CronServiceUrl: `https://adkami-scapping-api.up.railway.app/subscribeToUpdates?callbackurl=${encodeURIComponent("https://revolt-bots.up.railway.app/animeUpdates")}`,
     },
 ];
 const RegisterAllService = () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
     for (const { body, CronServiceUrl } of CronToRegister) {
-        const RegisterURL = CronServiceUrl || "https://cronapi.up.railway.app/addJob";
+        const RegisterURL = CronServiceUrl || "https://cronapi.onrender.com/addJob";
         const IsCronAPI = !CronServiceUrl;
         try {
             const res = yield (0, node_fetch_1.default)(RegisterURL, {
